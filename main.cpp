@@ -50,13 +50,10 @@ public:
 unsigned int screen_width = 640, screen_height = 400;
 
 void resolveCollision(CircleShape &shape, Vector2f &vel) {
-    float boundary_offset = screen_height - 2*shape.getRadius(), shape_y = shape.getPosition().y;
-
-    if (shape_y >= boundary_offset || shape_y <= 0) {
+    FloatRect shape_bounds = shape.getGlobalBounds();
+    if (shape_bounds.height + shape_bounds.top >= screen_height) {
+        shape.setPosition(shape.getPosition().x, screen_height - shape_bounds.height);
         vel.y *= -1.f * 0.8f;
-
-        if (shape_y >= boundary_offset)
-            shape.setPosition(Vector2f(shape.getPosition().x, boundary_offset));
     }
 }
 
